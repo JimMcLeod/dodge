@@ -1,16 +1,11 @@
 window.onload = function() {
-
-	var deviceWidth =  window.innerWidth;
-	var deviceHeight =  window.innerHeight;
 	var gameWidth = 360;
 	var gameHeight = 640;
 
 	var game;
 
-
 	var background,
 		logo;
-
 
 	var Menu = {
 		preload: function () {
@@ -84,11 +79,8 @@ window.onload = function() {
 		}
 	};
 
-	game = new Phaser.Game(360, 640, Phaser.AUTO, '');
+	game = new Phaser.Game(gameWidth, gameHeight, Phaser.AUTO, '');
 	game.state.add('Game', Game);
 	game.state.add('Menu', Menu);
 	game.state.start('Menu');
-
-
-
 };
