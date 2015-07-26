@@ -17,7 +17,7 @@ window.onload = function() {
 			this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
             this.scale.refresh();
 
-			background = this.add.sprite(this.world.centerX, this.world.centerY, 'background');
+			background = this.add.image(this.world.centerX, this.world.centerY, 'background');
 			background.anchor.setTo(0.5, 0.5);
 
 			background.inputEnabled = true;
@@ -47,7 +47,6 @@ window.onload = function() {
 		ball: null,
 
 		preload: function () {
-			this.load.image('background', 'img/background.png');
 			this.load.image('player', 'img/player.png');
 			this.load.image('ball', 'img/ball.png');
 		},
@@ -58,24 +57,30 @@ window.onload = function() {
 			this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
             this.scale.refresh();
 
-			background = this.add.sprite(this.world.centerX, this.world.centerY, 'background');
+			background = this.add.image(this.world.centerX, this.world.centerY, 'background');
 			background.anchor.setTo(0.5, 0.5);
 
 			player = this.add.sprite(this.world.centerX, this.world.centerY, 'player');
 			player.anchor.setTo(0.5, 0.5);
 			this.physics.enable(player, Phaser.Physics.ARCADE);
 
-			ball = this.add.sprite(this.world.centerX, 500, 'ball');
-			ball.anchor.setTo(0.5, 0.5);
+			ballGroup = this.add.group();
+			for (var i=0; i<10; i++) {
+				ballGroup.create(this.world.randomX, this.world.randomY, 'ball');
+			}
+			ballGroup.setAll('anchor.x', 0.5);
+            ballGroup.setAll('anchor.y', 0.5);
 		},
 
 		update: function () {
 			player.rotation = this.physics.arcade.moveToPointer(player, 60, this.input.activePointer, 500);
 
-			var distance = this.physics.arcade.distanceBetween(player, ball);
-			if (distance < 64) {
-				ball.destroy();
-			}
+			ballGroup.forEach(function (ball) {
+				var distance = this.physics.arcade.distanceBetween(player, ball);
+            	if (distance < 64) {
+					ball.destroy();
+				}
+            }, this);
 		}
 	};
 
